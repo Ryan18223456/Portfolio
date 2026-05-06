@@ -1,79 +1,69 @@
-
-const botao = document.getElementById("modoClaroEscuro");
-
-let claro = true;
-
-botao.addEventListener("click", function () {
-    if (claro) {
-        document.body.style.backgroundColor = "black";
-        document.body.style.color = "white";
-        botao.textContent = "Modo Claro";
-    } else {
-        document.body.style.backgroundColor = "white";
-        document.body.style.color = "black";
-        botao.textContent = "Modo Escuro";
-    }
-
-    claro = !claro; // agora funciona corretamente
-});
-
-
-const NOME = "Ryan de Carvalho";
-let tituloProfissional = "Desenvolvedor Web";
-let minhhaBio = "Sou um desenvolvedor web apaixonado por criar experiências digitais incríveis. Com habilidades em HTML, CSS e JavaScript, estou sempre buscando aprender novas tecnologias para aprimorar minhas habilidades e entregar projetos de alta qualidade. Meu objetivo é contribuir para o desenvolvimento de soluções inovadoras e impactantes na área de tecnologia.";
-
-let anoFormatura = 2028;
-let anoIngresso = 2025;
-
-let indefinido;
-let nulo = null;
-
-let curso = {
-    nome: "Sistemas de Informação",
-    semestre: 3,
-    disciplinaAtual: "Design focado no usuário",
+const usuario = {
+  nome: "Ryan de Carvalho",
+  titulo: "Desenvolvedor Web",
+  bio: "Desenvolvedor focado em performance, clareza de código e construção de interfaces eficientes.",
+  formatura: new Date("2028-12-31")
 };
 
+const el = {
+  nome: document.getElementById("nome"),
+  titulo: document.getElementById("titulo"),
+  bio: document.getElementById("bio"),
+  formatura: document.getElementById("formatura"),
+  tempo: document.getElementById("tempo"),
+  botao: document.getElementById("toggleTema")
+};
 
-console.log(typeof nulo);
-console.log(typeof indefinido);
-console.log(typeof anoFormatura);
-console.log(typeof minhhaBio);
-console.log(typeof tituloProfissional);
-console.log(typeof NOME);
-console.log(typeof curso);
+function calcularTempo(dataAtual, dataFutura) {
+  const diff = dataFutura - dataAtual;
 
+  if (diff <= 0) return null;
 
-function calcularTempoRestante(dataAtual, dataFutura) {
-    const diffMs = dataFutura - dataAtual;
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const anos = Math.floor(dias / 365);
+  const meses = Math.floor((dias % 365) / 30);
+  const restoDias = (dias % 365) % 30;
 
-    const diasTotais = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const anos = Math.floor(diasTotais / 365);
-    const meses = Math.floor((diasTotais % 365) / 30);
-    const dias = (diasTotais % 365) % 30;
-
-    return { anos, meses, dias };
+  return { anos, meses, dias: restoDias };
 }
 
-const hoje = new Date();
-const dataFormatura = new Date(`${anoFormatura}-12-31`);
+function render() {
+  el.nome.textContent = usuario.nome;
+  el.titulo.textContent = usuario.titulo;
+  el.bio.textContent = usuario.bio;
+  el.formatura.textContent = `Formatura: ${usuario.formatura.toLocaleDateString()}`;
 
-const tempo = calcularTempoRestante(hoje, dataFormatura);
+  const tempo = calcularTempo(new Date(), usuario.formatura);
 
-const commitMessage = `
-feat: adiciona modo claro/escuro e cálculo de formatura
+  el.tempo.textContent = tempo
+    ? `${tempo.anos} anos, ${tempo.meses} meses, ${tempo.dias} dias restantes`
+    : "Curso concluído";
+}
 
-Data atual: ${hoje.toLocaleDateString()}
-Tempo restante:
-- ${tempo.anos} anos
-- ${tempo.meses} meses
-- ${tempo.dias} dias
-`;
+function atualizarBotao() {
+  el.botao.textContent = document.body.classList.contains("dark")
+    ? "Modo Claro"
+    : "Modo Escuro";
+}
 
-console.log(commitMessage);
+function initTema() {
+  const temaSalvo = localStorage.getItem("tema");
 
+  if (temaSalvo === "dark") {
+    document.body.classList.add("dark");
+  }
 
-document.getElementById("meuNome").innerText = NOME;
-document.getElementById("tituloProfissional").innerText = tituloProfissional;
-document.getElementById("minhaBio").innerText = minhhaBio;
-document.getElementById("anoFormatura").innerText = anoFormatura;
+  atualizarBotao();
+
+  el.botao.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    const atual = document.body.classList.contains("dark") ? "dark" : "light";
+    localStorage.setItem("tema", atual);
+
+    atualizarBotao();
+  });
+}
+
+render();
+initTema();
