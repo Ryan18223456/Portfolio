@@ -1,4 +1,4 @@
-const NOME = "Ryan De Carvalho";
+const NOME = "Ryan Carvalho";
 
 let tituloProfissional = "Desenvolvedor e Analista de Sistemas";
 
@@ -27,6 +27,33 @@ let curso = {
     disciplinaAtual: "Aluno"
 };
 
+// ARRAY DE HABILIDADES
+let habilidades = ["Python", "SQLite", "JavaScript"];
+
+// PUSH -> adiciona no final
+habilidades.push("HTML");
+console.log("Após push:", habilidades);
+
+// POP -> remove o último
+habilidades.pop();
+console.log("Após pop:", habilidades);
+
+// UNSHIFT -> adiciona no início
+habilidades.unshift("Lógica de Programação");
+console.log("Após unshift:", habilidades);
+
+// SHIFT -> remove o primeiro
+habilidades.shift();
+console.log("Após shift:", habilidades);
+
+// INDEXOF -> procura posição
+let posicao = habilidades.indexOf("SQLite");
+console.log("SQLite está na posição:", posicao);
+
+// SPLICE -> remove/adiciona itens
+habilidades.splice(1, 1, "CSS");
+console.log("Após splice:", habilidades);
+
 // TESTES
 console.log(typeof nulo);
 console.log(typeof indefinido);
@@ -50,6 +77,10 @@ document.getElementById("anoIngresso").innerText =
 document.getElementById("anoFormatura").innerText =
 "Ano de formatura: " + anoFormatura;
 
+// MOSTRAR HABILIDADES
+document.getElementById("habilidades").innerText =
+"Habilidades: " + habilidades.join(", ");
+
 // CÁLCULO DO TEMPO RESTANTE
 let diasRestantes = diaFormatura - diaAtual;
 let mesesRestantes = mesFormatura - mesAtual;
@@ -65,7 +96,6 @@ if (anosRestantes === 1) {
 } else {
     textoAno = "anos";
 }
-
 
 // TEXTO DOS MESES
 let textoMes = "";
@@ -102,9 +132,15 @@ if (
 } else {
 
     let parts = [];
-    if (anosRestantes > 0) parts.push(`${anosRestantes} ${textoAno}`);
-    if (mesesRestantes > 0) parts.push(`${mesesRestantes} ${textoMes}`);
-    if (diasRestantes > 0) parts.push(`${diasRestantes} ${textoDia}`);
+
+    if (anosRestantes > 0)
+        parts.push(`${anosRestantes} ${textoAno}`);
+
+    if (mesesRestantes > 0)
+        parts.push(`${mesesRestantes} ${textoMes}`);
+
+    if (diasRestantes > 0)
+        parts.push(`${diasRestantes} ${textoDia}`);
 
     document.getElementById("tempoRestanteParaFormatura").innerText =
     `Tempo restante para formatura: ${parts.join(", ")}`;
