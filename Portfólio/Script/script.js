@@ -1,192 +1,304 @@
-/* ===== script.js — Ryan Portfolio ===== */
+/* =============================================
+   PORTFÓLIO — Ryan Carvalho
+   ============================================= */
 
-// ── Custom Cursor ──────────────────────────────────────────────
-const cursor = document.getElementById('cursor');
-const trail  = document.getElementById('cursorTrail');
+// ── 1. DADOS (arrays e objetos) ─────────────────
 
-let mouseX = 0, mouseY = 0;
+const dadosPerfil = {
+  nome: "Ryan Carvalho",
+  email: "ryancarvalhosilva0907@gmail.com",
+  curso: "Tecnologia da Informação",
+  dataFormatura: new Date("2027-12-01")
+};
 
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cursor.style.left = mouseX + 'px';
-  cursor.style.top  = mouseY + 'px';
-});
+const habilidades = [
+  "HTML5", "CSS3", "JavaScript ES6+",
+  "Manipulação de DOM", "Fetch API / Async-Await",
+  "APIs REST", "Git & GitHub",
+  "Responsive Design", "JSON",
+  "Node.js (básico)", "Lógica de Programação"
+];
 
-// Trail follows with slight delay
-let trailX = 0, trailY = 0;
-function animateTrail() {
-  trailX += (mouseX - trailX) * 0.14;
-  trailY += (mouseY - trailY) * 0.14;
-  trail.style.left = trailX + 'px';
-  trail.style.top  = trailY + 'px';
-  requestAnimationFrame(animateTrail);
-}
-animateTrail();
-
-// ── Nav scroll effect ──────────────────────────────────────────
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// ── Smooth reveal on scroll ────────────────────────────────────
-const revealEls = document.querySelectorAll(
-  '.sobre-grid, .projeto-card, .skills-category, .contato-content, .section-title, .section-label'
-);
-revealEls.forEach(el => el.classList.add('reveal'));
-
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, 80 * (Array.from(revealEls).indexOf(entry.target) % 4));
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
-
-revealEls.forEach(el => revealObserver.observe(el));
-
-// ── Skill bars animate on scroll ──────────────────────────────
-const skillFills = document.querySelectorAll('.skill-fill');
-
-const skillObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animated');
-      skillObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.3 });
-
-skillFills.forEach(fill => skillObserver.observe(fill));
-
-// ── Hero bg text parallax ──────────────────────────────────────
-const bgText = document.querySelector('.hero-bg-text');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (bgText) {
-    bgText.style.transform = `translate(-50%, calc(-50% + ${y * 0.3}px))`;
-    bgText.style.opacity = Math.max(0, 1 - y / 500);
+const projetos = [
+  {
+    tag: "JavaScript · DOM",
+    nome: "Portfólio Interativo",
+    descricao: "Portfólio pessoal com renderização dinâmica via DOM, quiz de perfil, consumo de APIs e modo escuro."
+  },
+  {
+    tag: "API · Async/Await",
+    nome: "Frases Motivacionais",
+    descricao: "Busca frases em inglês via API e traduz para o português em tempo real com fetch assíncrono."
+  },
+  {
+    tag: "JS · Datas",
+    nome: "Contador de Formatura",
+    descricao: "Calcula dinamicamente anos, meses e dias restantes até a data de formatura."
+  },
+  {
+    tag: "UX · JS",
+    nome: "Quiz Tech Profile",
+    descricao: "Quiz interativo que identifica perfil Front-End ou Back-End com feedback personalizado."
   }
+];
+
+const perfis = {
+  frontend: {
+    emoji: "🎨",
+    titulo: "Você é Front-End!",
+    desc: "Você pensa visualmente e se importa com cada pixel. HTML, CSS e JavaScript no navegador são sua linguagem. Criar experiências bonitas e intuitivas é o que te motiva."
+  },
+  backend: {
+    emoji: "⚙️",
+    titulo: "Você é Back-End!",
+    desc: "Você pensa em sistemas, estruturas e eficiência. Bancos de dados, APIs e lógica de negócio são onde você brilha. O que acontece nos bastidores é tão importante quanto a vitrine."
+  }
+};
+
+// Frases locais (fallback garantido)
+const frasesFallback = [
+  { content: "Code is like humor. When you have to explain it, it's bad.", author: "Cory House" },
+  { content: "First, solve the problem. Then, write the code.", author: "John Johnson" },
+  { content: "The best way to predict the future is to invent it.", author: "Alan Kay" },
+  { content: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
+  { content: "Make it work, make it right, make it fast.", author: "Kent Beck" },
+  { content: "Learning never exhausts the mind.", author: "Leonardo da Vinci" },
+  { content: "Programs must be written for people to read.", author: "Harold Abelson" }
+];
+
+// ── 2. INICIALIZAÇÃO ────────────────────────────
+
+document.addEventListener("DOMContentLoaded", () => {
+  exibirDadosDinamicos();
+  renderSkills();
+  renderProjects();
+  mostrarDiaEStatus();
+  iniciarContador();
+  configurarSaudacao();
+  configurarThemeToggle();
+  buscarFrase();
 });
 
-// ── Navbar active link highlight ──────────────────────────────
-const sections = document.querySelectorAll('section[id]');
-const navLinks  = document.querySelectorAll('.nav-links a');
+// ── 3. EXIBIÇÃO DINÂMICA DE DADOS ───────────────
 
-const sectionObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.getAttribute('id');
-      navLinks.forEach(link => {
-        link.style.color = link.getAttribute('href') === `#${id}` ? 'var(--accent)' : '';
-      });
-    }
-  });
-}, { threshold: 0.5 });
+function exibirDadosDinamicos() {
+  // Injeta nome dinamicamente no título hero (se o elemento existir)
+  const elNome = document.getElementById("nome-dinamico");
+  if (elNome) elNome.textContent = dadosPerfil.nome;
 
-sections.forEach(s => sectionObserver.observe(s));
-
-// ── Float cards wobble on mouse ────────────────────────────────
-const floatCards = document.querySelectorAll('.hero-float-card');
-document.addEventListener('mousemove', e => {
-  const cx = window.innerWidth  / 2;
-  const cy = window.innerHeight / 2;
-  const dx = (e.clientX - cx) / cx;
-  const dy = (e.clientY - cy) / cy;
-  floatCards.forEach((card, i) => {
-    const depth = (i + 1) * 6;
-    card.style.transform = `translate(${dx * depth}px, ${dy * depth}px)`;
-  });
-});
-
-// ── Contact form ───────────────────────────────────────────────
-function sendMsg() {
-  const nome  = document.getElementById('f-nome').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const msg   = document.getElementById('f-msg').value.trim();
-  const fb    = document.getElementById('feedback');
-  const btn   = document.getElementById('send-btn');
-
-  if (!nome || !email || !msg) {
-    fb.textContent = '⚠ Preencha todos os campos.';
-    fb.style.color = 'var(--accent2)';
-    return;
+  // Injeta email no contato
+  const elEmail = document.getElementById("email-dinamico");
+  if (elEmail) {
+    elEmail.textContent = dadosPerfil.email;
+    elEmail.href = `mailto:${dadosPerfil.email}`;
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    fb.textContent = '⚠ Insira um e-mail válido.';
-    fb.style.color = 'var(--accent2)';
-    return;
-  }
-
-  // Simulate send
-  btn.textContent = 'Enviando...';
-  btn.style.opacity = '0.7';
-  btn.disabled = true;
-
-  setTimeout(() => {
-    fb.textContent = '✓ Mensagem enviada! Em breve entrarei em contato.';
-    fb.style.color = 'var(--accent)';
-    btn.textContent = 'Enviar Mensagem ↗';
-    btn.style.opacity = '1';
-    btn.disabled = false;
-    document.getElementById('f-nome').value = '';
-    document.getElementById('f-email').value = '';
-    document.getElementById('f-msg').value = '';
-  }, 1400);
 }
 
-// ── Typing effect on hero tag ──────────────────────────────────
-const heroTag = document.querySelector('.hero-tag');
-if (heroTag) {
-  const text = heroTag.textContent;
-  heroTag.textContent = '◆ ';
-  let i = 2;
-  const type = () => {
-    if (i < text.length) {
-      heroTag.textContent += text[i];
-      i++;
-      setTimeout(type, 38);
-    }
-  };
-  setTimeout(type, 600);
+// ── 4. RENDERIZAÇÃO DE HABILIDADES ─────────────
+
+function renderSkills() {
+  const grid = document.getElementById("skills-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+
+  habilidades.forEach((skill, i) => {
+    const tag = document.createElement("span");
+    tag.className = "skill-tag";
+    tag.textContent = skill;
+    tag.style.animationDelay = `${i * 0.06}s`;
+    grid.appendChild(tag);
+  });
 }
 
-// ── Stats count up animation ──────────────────────────────────
-const statNums = document.querySelectorAll('.stat-num');
+// ── 5. RENDERIZAÇÃO DE PROJETOS ─────────────────
 
-const countObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el   = entry.target;
-      const text = el.textContent;
-      const num  = parseInt(text.replace(/\D/g, ''));
-      const plus = text.includes('+');
-      let current = 0;
-      const step  = Math.ceil(num / 30);
-      const tick  = setInterval(() => {
-        current = Math.min(current + step, num);
-        el.textContent = (plus ? '+' : '') + current;
-        if (current >= num) clearInterval(tick);
-      }, 40);
-      countObserver.unobserve(el);
+function renderProjects() {
+  const grid = document.getElementById("projects-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+
+  projetos.forEach((p, i) => {
+    const card = document.createElement("div");
+    card.className = "project-card";
+    card.style.animationDelay = `${i * 0.1}s`;
+    card.innerHTML = `
+      <p class="project-tag">${p.tag}</p>
+      <h3>${p.nome}</h3>
+      <p>${p.descricao}</p>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── 6. SAUDAÇÃO PERSONALIZADA ───────────────────
+
+function configurarSaudacao() {
+  const btn   = document.getElementById("greet-btn");
+  const input = document.getElementById("name-input");
+  const msg   = document.getElementById("greeting-msg");
+  if (!btn || !input || !msg) return;
+
+  function saudar() {
+    const nome = input.value.trim();
+    if (!nome) {
+      msg.textContent = "Por favor, escreva seu nome! 😊";
+      return;
+    }
+    const hora = new Date().getHours();
+    let saudacao;
+    if (hora >= 5 && hora < 12)       saudacao = "Bom dia";
+    else if (hora >= 12 && hora < 18) saudacao = "Boa tarde";
+    else                               saudacao = "Boa noite";
+
+    msg.textContent = `${saudacao}, ${nome}! Seja bem-vindo(a) ao meu portfólio. 🚀`;
+  }
+
+  btn.addEventListener("click", saudar);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") saudar(); });
+}
+
+// ── 7. DIA DA SEMANA & STATUS ACADÊMICO ─────────
+
+function mostrarDiaEStatus() {
+  const dias = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
+  const hoje = new Date();
+
+  const elDia    = document.getElementById("current-day");
+  const elStatus = document.getElementById("status-badge");
+
+  if (elDia)    elDia.textContent = dias[hoje.getDay()];
+  if (elStatus) {
+    const fimSemana = hoje.getDay() === 0 || hoje.getDay() === 6;
+    elStatus.textContent = fimSemana ? "📅 Fim de semana" : "✅ Em aprovação acadêmica";
+  }
+}
+
+// ── 8. CONTADOR DE FORMATURA ────────────────────
+
+function iniciarContador() {
+  function atualizar() {
+    const agora = new Date();
+    const diff  = dadosPerfil.dataFormatura - agora;
+
+    const elAnos  = document.getElementById("cd-anos");
+    const elMeses = document.getElementById("cd-meses");
+    const elDias  = document.getElementById("cd-dias");
+
+    if (diff <= 0) {
+      if (elAnos)  elAnos.textContent  = "🎓";
+      if (elMeses) elMeses.textContent = "0";
+      if (elDias)  elDias.textContent  = "0";
+      return;
+    }
+
+    const totalDias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const anos  = Math.floor(totalDias / 365);
+    const meses = Math.floor((totalDias % 365) / 30);
+    const dias  = totalDias % 30;
+
+    if (elAnos)  elAnos.textContent  = anos;
+    if (elMeses) elMeses.textContent = meses;
+    if (elDias)  elDias.textContent  = dias;
+  }
+
+  atualizar();
+  setInterval(atualizar, 60000);
+}
+
+// ── 9. QUIZ DE PERFIL TECH ──────────────────────
+
+function mostrarPerfil(tipo) {
+  const result = document.getElementById("quiz-result");
+  const perfil = perfis[tipo];
+  if (!result || !perfil) return;
+
+  document.querySelectorAll(".quiz-btn").forEach(btn => btn.classList.remove("active"));
+  const btnAtivo = document.querySelector(`.quiz-btn[data-tipo="${tipo}"]`);
+  if (btnAtivo) btnAtivo.classList.add("active");
+
+  result.classList.remove("hidden");
+  result.innerHTML = `
+    <strong>${perfil.emoji} ${perfil.titulo}</strong><br/>
+    <span style="color:var(--text-muted)">${perfil.desc}</span>
+  `;
+}
+
+// ── 10. FRASE MOTIVACIONAL + TRADUÇÃO ASSÍNCRONA ─
+
+async function buscarFrase() {
+  const elFrase    = document.getElementById("frase-texto");
+  const elTraducao = document.getElementById("frase-traducao");
+  const btn        = document.getElementById("nova-frase-btn");
+
+  if (!elFrase) return;
+
+  // Registra clique do botão apenas uma vez
+  if (btn && !btn.dataset.bound) {
+    btn.dataset.bound = "true";
+    btn.addEventListener("click", buscarFrase);
+  }
+
+  // Feedback visual
+  elFrase.style.opacity = "0.3";
+  if (elTraducao) elTraducao.textContent = "Traduzindo...";
+
+  let fraseEN = "";
+  let autorEN = "";
+
+  // Tenta API externa (ZenQuotes via proxy CORS)
+  try {
+    const res = await fetch("https://zenquotes.io/api/random");
+    if (!res.ok) throw new Error("Falhou");
+    const data = await res.json();
+    fraseEN = data[0].q;
+    autorEN = data[0].a;
+  } catch {
+    // Fallback local
+    const rand = frasesFallback[Math.floor(Math.random() * frasesFallback.length)];
+    fraseEN = rand.content;
+    autorEN = rand.author;
+  }
+
+  elFrase.textContent = `${fraseEN} — ${autorEN}`;
+  elFrase.style.opacity = "1";
+
+  // Tradução assíncrona via MyMemory API (gratuita, sem chave)
+  if (elTraducao) {
+    try {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(fraseEN)}&langpair=en|pt-BR`;
+      const res  = await fetch(url);
+      const data = await res.json();
+      const trad = data?.responseData?.translatedText;
+      elTraducao.textContent = (trad && trad !== fraseEN) ? `↳ ${trad}` : "";
+    } catch {
+      elTraducao.textContent = "";
+    }
+  }
+}
+
+// ── 11. ALTERNADOR DE TEMA CLARO / ESCURO ────────
+
+function configurarThemeToggle() {
+  const btn = document.getElementById("theme-toggle");
+  if (!btn) return;
+
+  // Restaurar tema salvo no localStorage
+  const temaSalvo = localStorage.getItem("tema-ryan");
+  if (temaSalvo === "light") {
+    document.documentElement.setAttribute("data-theme", "light");
+    btn.textContent = "☀️";
+  }
+
+  btn.addEventListener("click", () => {
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    if (isLight) {
+      document.documentElement.removeAttribute("data-theme");
+      btn.textContent = "🌙";
+      localStorage.setItem("tema-ryan", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      btn.textContent = "☀️";
+      localStorage.setItem("tema-ryan", "light");
     }
   });
-}, { threshold: 0.6 });
-
-statNums.forEach(el => countObserver.observe(el));
-
-// ── Cursor hover effect on cards ──────────────────────────────
-document.querySelectorAll('.projeto-card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
-    cursor.style.width  = '48px';
-    cursor.style.height = '48px';
-  });
-  card.addEventListener('mouseleave', () => {
-    cursor.style.width  = '12px';
-    cursor.style.height = '12px';
-  });
-});
+}
