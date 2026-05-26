@@ -1,147 +1,192 @@
-const NOME = "Ryan Carvalho";
+/* ===== script.js — Ryan Portfolio ===== */
 
-let tituloProfissional = "Desenvolvedor e Analista de Sistemas";
+// ── Custom Cursor ──────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const trail  = document.getElementById('cursorTrail');
 
-let minhaBio = "Sou estudante de Desenvolvimento de Sistemas e apaixonado por tecnologia, programação e resolução de problemas. Tenho experiência com Python, SQLite e criação de projetos focados em aprendizado prático, sempre buscando evoluir minhas habilidades em desenvolvimento de software. Gosto de transformar ideias em soluções funcionais, aprender novas tecnologias e enfrentar desafios que me façam crescer como desenvolvedor. Atualmente, estou focado em aprimorar meus conhecimentos em back-end, lógica de programação e desenvolvimento de aplicações.";
+let mouseX = 0, mouseY = 0;
 
-let anoFormatura = 2026;
-let mesFormatura = 12;
-let diaFormatura = 31;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top  = mouseY + 'px';
+});
 
-let anoIngresso = 2025;
-let mesIngresso = 1;
-let diaIngresso = 1;
+// Trail follows with slight delay
+let trailX = 0, trailY = 0;
+function animateTrail() {
+  trailX += (mouseX - trailX) * 0.14;
+  trailY += (mouseY - trailY) * 0.14;
+  trail.style.left = trailX + 'px';
+  trail.style.top  = trailY + 'px';
+  requestAnimationFrame(animateTrail);
+}
+animateTrail();
 
-// DATA ATUAL
-let dataAtual = new Date();
-let mesAtual = dataAtual.getMonth() + 1;
-let anoAtual = dataAtual.getFullYear();
-let diaAtual = dataAtual.getDate();
+// ── Nav scroll effect ──────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
 
-let indefinido;
-let nulo = null;
+// ── Smooth reveal on scroll ────────────────────────────────────
+const revealEls = document.querySelectorAll(
+  '.sobre-grid, .projeto-card, .skills-category, .contato-content, .section-title, .section-label'
+);
+revealEls.forEach(el => el.classList.add('reveal'));
 
-let curso = {
-    nome: "Desenvolvedor de sistemas",
-    semestre: 3,
-    disciplinaAtual: "Aluno"
-};
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, 80 * (Array.from(revealEls).indexOf(entry.target) % 4));
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
 
-// ARRAY DE HABILIDADES
-let habilidades = ["Python", "SQLite", "JavaScript"];
+revealEls.forEach(el => revealObserver.observe(el));
 
-// PUSH -> adiciona no final
-habilidades.push("HTML");
-console.log("Após push:", habilidades);
+// ── Skill bars animate on scroll ──────────────────────────────
+const skillFills = document.querySelectorAll('.skill-fill');
 
-// POP -> remove o último
-habilidades.pop();
-console.log("Após pop:", habilidades);
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animated');
+      skillObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
 
-// UNSHIFT -> adiciona no início
-habilidades.unshift("Lógica de Programação");
-console.log("Após unshift:", habilidades);
+skillFills.forEach(fill => skillObserver.observe(fill));
 
-// SHIFT -> remove o primeiro
-habilidades.shift();
-console.log("Após shift:", habilidades);
+// ── Hero bg text parallax ──────────────────────────────────────
+const bgText = document.querySelector('.hero-bg-text');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (bgText) {
+    bgText.style.transform = `translate(-50%, calc(-50% + ${y * 0.3}px))`;
+    bgText.style.opacity = Math.max(0, 1 - y / 500);
+  }
+});
 
-// INDEXOF -> procura posição
-let posicao = habilidades.indexOf("SQLite");
-console.log("SQLite está na posição:", posicao);
+// ── Navbar active link highlight ──────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav-links a');
 
-// SPLICE -> remove/adiciona itens
-habilidades.splice(1, 1, "CSS");
-console.log("Após splice:", habilidades);
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${id}` ? 'var(--accent)' : '';
+      });
+    }
+  });
+}, { threshold: 0.5 });
 
-// TESTES
-console.log(typeof nulo);
-console.log(typeof indefinido);
-console.log(typeof anoFormatura);
-console.log(typeof minhaBio);
-console.log(typeof tituloProfissional);
-console.log(typeof NOME);
-console.log(typeof curso);
+sections.forEach(s => sectionObserver.observe(s));
 
-// MOSTRAR DADOS NA TELA
-document.getElementById("meuNome").innerText = NOME;
+// ── Float cards wobble on mouse ────────────────────────────────
+const floatCards = document.querySelectorAll('.hero-float-card');
+document.addEventListener('mousemove', e => {
+  const cx = window.innerWidth  / 2;
+  const cy = window.innerHeight / 2;
+  const dx = (e.clientX - cx) / cx;
+  const dy = (e.clientY - cy) / cy;
+  floatCards.forEach((card, i) => {
+    const depth = (i + 1) * 6;
+    card.style.transform = `translate(${dx * depth}px, ${dy * depth}px)`;
+  });
+});
 
-document.getElementById("tituloProfissional").innerText =
-tituloProfissional;
+// ── Contact form ───────────────────────────────────────────────
+function sendMsg() {
+  const nome  = document.getElementById('f-nome').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const msg   = document.getElementById('f-msg').value.trim();
+  const fb    = document.getElementById('feedback');
+  const btn   = document.getElementById('send-btn');
 
-document.getElementById("minhaBio").innerText = minhaBio;
+  if (!nome || !email || !msg) {
+    fb.textContent = '⚠ Preencha todos os campos.';
+    fb.style.color = 'var(--accent2)';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fb.textContent = '⚠ Insira um e-mail válido.';
+    fb.style.color = 'var(--accent2)';
+    return;
+  }
 
-document.getElementById("anoIngresso").innerText =
-"Ano de ingresso: " + anoIngresso;
+  // Simulate send
+  btn.textContent = 'Enviando...';
+  btn.style.opacity = '0.7';
+  btn.disabled = true;
 
-document.getElementById("anoFormatura").innerText =
-"Ano de formatura: " + anoFormatura;
-
-// MOSTRAR HABILIDADES
-document.getElementById("habilidades").innerText =
-"Habilidades: " + habilidades.join(", ");
-
-// CÁLCULO DO TEMPO RESTANTE
-let diasRestantes = diaFormatura - diaAtual;
-let mesesRestantes = mesFormatura - mesAtual;
-let anosRestantes = anoFormatura - anoAtual;
-
-// TEXTO DOS ANOS
-let textoAno = "";
-
-if (anosRestantes === 1) {
-    textoAno = "ano";
-} else if (anosRestantes <= 0) {
-    textoAno = "";
-} else {
-    textoAno = "anos";
+  setTimeout(() => {
+    fb.textContent = '✓ Mensagem enviada! Em breve entrarei em contato.';
+    fb.style.color = 'var(--accent)';
+    btn.textContent = 'Enviar Mensagem ↗';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-msg').value = '';
+  }, 1400);
 }
 
-// TEXTO DOS MESES
-let textoMes = "";
-
-if (mesesRestantes <= 0) {
-    textoMes = "";
-} else if (mesesRestantes === 1) {
-    textoMes = "mês";
-} else {
-    textoMes = "meses";
+// ── Typing effect on hero tag ──────────────────────────────────
+const heroTag = document.querySelector('.hero-tag');
+if (heroTag) {
+  const text = heroTag.textContent;
+  heroTag.textContent = '◆ ';
+  let i = 2;
+  const type = () => {
+    if (i < text.length) {
+      heroTag.textContent += text[i];
+      i++;
+      setTimeout(type, 38);
+    }
+  };
+  setTimeout(type, 600);
 }
 
-// TEXTO DOS DIAS
-let textoDia = "";
+// ── Stats count up animation ──────────────────────────────────
+const statNums = document.querySelectorAll('.stat-num');
 
-if (diasRestantes <= 0) {
-    textoDia = "";
-} else if (diasRestantes === 1) {
-    textoDia = "dia";
-} else {
-    textoDia = "dias";
-}
+const countObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el   = entry.target;
+      const text = el.textContent;
+      const num  = parseInt(text.replace(/\D/g, ''));
+      const plus = text.includes('+');
+      let current = 0;
+      const step  = Math.ceil(num / 30);
+      const tick  = setInterval(() => {
+        current = Math.min(current + step, num);
+        el.textContent = (plus ? '+' : '') + current;
+        if (current >= num) clearInterval(tick);
+      }, 40);
+      countObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.6 });
 
-// MOSTRAR TEMPO RESTANTE
-if (
-    anosRestantes <= 0 &&
-    mesesRestantes <= 0 &&
-    diasRestantes <= 0
-) {
+statNums.forEach(el => countObserver.observe(el));
 
-    document.getElementById("tempoRestanteParaFormatura").innerText =
-    "Curso Concluído!";
-
-} else {
-
-    let parts = [];
-
-    if (anosRestantes > 0)
-        parts.push(`${anosRestantes} ${textoAno}`);
-
-    if (mesesRestantes > 0)
-        parts.push(`${mesesRestantes} ${textoMes}`);
-
-    if (diasRestantes > 0)
-        parts.push(`${diasRestantes} ${textoDia}`);
-
-    document.getElementById("tempoRestanteParaFormatura").innerText =
-    `Tempo restante para formatura: ${parts.join(", ")}`;
-}
+// ── Cursor hover effect on cards ──────────────────────────────
+document.querySelectorAll('.projeto-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    cursor.style.width  = '48px';
+    cursor.style.height = '48px';
+  });
+  card.addEventListener('mouseleave', () => {
+    cursor.style.width  = '12px';
+    cursor.style.height = '12px';
+  });
+});
