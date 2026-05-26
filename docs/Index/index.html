@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ryan Carvalho — Portfólio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- HEADER / HERO -->
+  <header class="hero">
+    <nav class="navbar">
+      <span class="logo">RC</span>
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#habilidades">Skills</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li><button id="theme-toggle" aria-label="Alternar tema">🌙</button></li>
+      </ul>
+    </nav>
+
+    <div class="hero-content">
+      <p class="hero-tag">— Desenvolvedor Web</p>
+      <h1 class="hero-title">Ryan<br/><span>Carvalho</span></h1>
+
+      <div class="greeting-box">
+        <input type="text" id="name-input" placeholder="Digite seu nome aqui..." />
+        <button id="greet-btn">Saudar</button>
+        <p id="greeting-msg"></p>
+      </div>
+
+      <div class="hero-meta">
+        <span id="current-day"></span>
+        <span class="separator">·</span>
+        <span id="status-badge"></span>
+      </div>
+    </div>
+
+    <div class="scroll-hint">↓</div>
+  </header>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="section">
+    <div class="section-label">01 — Sobre</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Olá, sou o Ryan.</h2>
+        <p>
+          Estudante de tecnologia apaixonado por transformar ideias em interfaces funcionais e elegantes.
+          Foco em desenvolvimento Front-End com JavaScript puro, manipulação do DOM e integração de APIs.
+        </p>
+        <p>
+          Acredito que bom código é aquele que resolve o problema <em>e</em> é agradável de ler.
+        </p>
+      </div>
+      <div class="countdown-card">
+        <p class="countdown-label">⏳ Formatura em</p>
+        <div id="countdown-display">
+          <div class="cd-unit"><span id="cd-anos">--</span><small>anos</small></div>
+          <div class="cd-unit"><span id="cd-meses">--</span><small>meses</small></div>
+          <div class="cd-unit"><span id="cd-dias">--</span><small>dias</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ PERFIL TECH -->
+  <section id="quiz" class="section section-dark">
+    <div class="section-label">02 — Quiz de Perfil</div>
+    <h2>Qual é o seu lado?</h2>
+    <p class="quiz-subtitle">Descubra se você tem alma de Front-End ou Back-End.</p>
+    <div class="quiz-buttons">
+      <button class="quiz-btn" data-tipo="frontend" onclick="mostrarPerfil('frontend')">
+        🎨 Front-End
+      </button>
+      <button class="quiz-btn" data-tipo="backend" onclick="mostrarPerfil('backend')">
+        ⚙️ Back-End
+      </button>
+    </div>
+    <div id="quiz-result" class="quiz-result hidden"></div>
+  </section>
+
+  <!-- HABILIDADES -->
+  <section id="habilidades" class="section">
+    <div class="section-label">03 — Habilidades</div>
+    <h2>O que eu uso</h2>
+    <div id="skills-grid" class="skills-grid">
+      <!-- Renderizado via JS -->
+    </div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos" class="section section-dark">
+    <div class="section-label">04 — Projetos</div>
+    <h2>O que eu construí</h2>
+    <div id="projects-grid" class="projects-grid">
+      <!-- Renderizado via JS -->
+    </div>
+  </section>
+
+  <!-- FRASE MOTIVACIONAL -->
+  <section id="frase" class="section frase-section">
+    <div class="section-label">05 — Inspiração</div>
+    <div class="frase-container">
+      <blockquote id="frase-texto">Carregando frase...</blockquote>
+      <p id="frase-traducao" class="frase-traducao"></p>
+      <button id="nova-frase-btn">Nova frase ✦</button>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="section">
+    <div class="section-label">06 — Contato</div>
+    <div class="contact-block">
+      <h2>Vamos conversar?</h2>
+      <a href="mailto:ryancarvalhosilva0907@gmail.com" class="contact-email">
+        ryancarvalhosilva0907@gmail.com
+      </a>
+      <div class="contact-links">
+        <a href="https://ryan18223456.github.io/Portfolio//Portfolio" target="_blank" class="btn-outline">GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 Ryan Carvalho · Feito com HTML, CSS & JS</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
