@@ -3,294 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ryan — Portfólio</title>
+  <title>Ryan Carvalho — Portfólio</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <!-- CURSOR -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-trail" id="cursorTrail"></div>
+  <!-- HEADER / HERO -->
+  <header class="hero">
+    <nav class="navbar">
+      <span class="logo">RC</span>
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#habilidades">Skills</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li><button id="theme-toggle" aria-label="Alternar tema">🌙</button></li>
+      </ul>
+    </nav>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <div class="nav-logo">R<span>.</span></div>
-    <ul class="nav-links">
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#projetos">Projetos</a></li>
-      <li><a href="#habilidades">Skills</a></li>
-      <li><a href="#contato">Contato</a></li>
-    </ul>
-    <div class="nav-status">
-      <span class="dot"></span> Disponível para projetos
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-bg-text">RYAN</div>
     <div class="hero-content">
-      <div class="hero-tag">&#9670; Desenvolvedor & Designer</div>
-      <h1 class="hero-title">
-        Criando<br/>
-        <em>experiências</em><br/>
-        digitais
-      </h1>
-      <p class="hero-sub">Transformo ideias em interfaces que as pessoas amam usar.</p>
-      <div class="hero-cta">
-        <a href="#projetos" class="btn-primary">Ver Projetos</a>
-        <a href="#contato" class="btn-outline">Falar Comigo</a>
+      <p class="hero-tag">— Desenvolvedor Web</p>
+      <h1 class="hero-title">Ryan<br/><span>Carvalho</span></h1>
+
+      <div class="greeting-box">
+        <input type="text" id="name-input" placeholder="Digite seu nome aqui..." />
+        <button id="greet-btn">Saudar</button>
+        <p id="greeting-msg"></p>
+      </div>
+
+      <div class="hero-meta">
+        <span id="current-day"></span>
+        <span class="separator">·</span>
+        <span id="status-badge"></span>
       </div>
     </div>
-    <div class="hero-scroll">
-      <span>scroll</span>
-      <div class="scroll-line"></div>
-    </div>
-    <div class="hero-float-card card1">
-      <span class="card-icon">⚡</span>
-      <span>React & Next.js</span>
-    </div>
-    <div class="hero-float-card card2">
-      <span class="card-icon">🎨</span>
-      <span>UI / UX Design</span>
-    </div>
-    <div class="hero-float-card card3">
-      <span class="card-icon">🚀</span>
-      <span>+3 anos exp.</span>
+
+    <div class="scroll-hint">↓</div>
+  </header>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="section">
+    <div class="section-label">01 — Sobre</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Olá, sou o Ryan.</h2>
+        <p>
+          Estudante de tecnologia apaixonado por transformar ideias em interfaces funcionais e elegantes.
+          Foco em desenvolvimento Front-End com JavaScript puro, manipulação do DOM e integração de APIs.
+        </p>
+        <p>
+          Acredito que bom código é aquele que resolve o problema <em>e</em> é agradável de ler.
+        </p>
+      </div>
+      <div class="countdown-card">
+        <p class="countdown-label">⏳ Formatura em</p>
+        <div id="countdown-display">
+          <div class="cd-unit"><span id="cd-anos">--</span><small>anos</small></div>
+          <div class="cd-unit"><span id="cd-meses">--</span><small>meses</small></div>
+          <div class="cd-unit"><span id="cd-dias">--</span><small>dias</small></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- SOBRE -->
-  <section class="sobre" id="sobre">
-    <div class="container">
-      <div class="section-label">&#9670; 01 — Sobre</div>
-      <div class="sobre-grid">
-        <div class="sobre-img-wrap">
-          <div class="sobre-img-placeholder">
-            <div class="img-initials">RY</div>
-          </div>
-          <div class="sobre-img-deco"></div>
-        </div>
-        <div class="sobre-text">
-          <h2>Olá, eu sou <em>Ryan</em></h2>
-          <p>Desenvolvedor full-stack apaixonado por criar produtos digitais que unem estética e performance. Acredito que um bom código é aquele que o usuário nunca vai precisar perceber — mas vai sentir.</p>
-          <p>Quando não estou codando, você me acha explorando design gráfico, lendo sobre sistemas e semeando ideias para o próximo projeto.</p>
-          <div class="sobre-stats">
-            <div class="stat">
-              <span class="stat-num">+30</span>
-              <span class="stat-label">Projetos entregues</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num">3+</span>
-              <span class="stat-label">Anos de experiência</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num">15</span>
-              <span class="stat-label">Clientes satisfeitos</span>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- QUIZ PERFIL TECH -->
+  <section id="quiz" class="section section-dark">
+    <div class="section-label">02 — Quiz de Perfil</div>
+    <h2>Qual é o seu lado?</h2>
+    <p class="quiz-subtitle">Descubra se você tem alma de Front-End ou Back-End.</p>
+    <div class="quiz-buttons">
+      <button class="quiz-btn" data-tipo="frontend" onclick="mostrarPerfil('frontend')">
+        🎨 Front-End
+      </button>
+      <button class="quiz-btn" data-tipo="backend" onclick="mostrarPerfil('backend')">
+        ⚙️ Back-End
+      </button>
+    </div>
+    <div id="quiz-result" class="quiz-result hidden"></div>
+  </section>
+
+  <!-- HABILIDADES -->
+  <section id="habilidades" class="section">
+    <div class="section-label">03 — Habilidades</div>
+    <h2>O que eu uso</h2>
+    <div id="skills-grid" class="skills-grid">
+      <!-- Renderizado via JS -->
     </div>
   </section>
 
   <!-- PROJETOS -->
-  <section class="projetos" id="projetos">
-    <div class="container">
-      <div class="section-label">&#9670; 02 — Projetos</div>
-      <h2 class="section-title">Trabalhos Selecionados</h2>
-      <div class="projetos-grid">
-
-        <div class="projeto-card" data-index="01">
-          <div class="projeto-thumb p1">
-            <div class="projeto-overlay">
-              <span>Ver Projeto →</span>
-            </div>
-          </div>
-          <div class="projeto-info">
-            <div class="projeto-tags">
-              <span>React</span><span>Node.js</span><span>MongoDB</span>
-            </div>
-            <h3>Dashboard Analytics</h3>
-            <p>Plataforma de visualização de dados em tempo real para e-commerce.</p>
-          </div>
-        </div>
-
-        <div class="projeto-card" data-index="02">
-          <div class="projeto-thumb p2">
-            <div class="projeto-overlay">
-              <span>Ver Projeto →</span>
-            </div>
-          </div>
-          <div class="projeto-info">
-            <div class="projeto-tags">
-              <span>Next.js</span><span>Tailwind</span><span>Prisma</span>
-            </div>
-            <h3>App de Finanças Pessoais</h3>
-            <p>Controle financeiro com IA integrada para sugestões de economia.</p>
-          </div>
-        </div>
-
-        <div class="projeto-card featured" data-index="03">
-          <div class="projeto-thumb p3">
-            <div class="projeto-overlay">
-              <span>Ver Projeto →</span>
-            </div>
-          </div>
-          <div class="projeto-info">
-            <div class="projeto-tags">
-              <span>Vue.js</span><span>Firebase</span><span>Design System</span>
-            </div>
-            <h3>Plataforma de Cursos Online</h3>
-            <p>Ecossistema completo de aprendizado com streaming de vídeo e gamificação.</p>
-          </div>
-        </div>
-
-        <div class="projeto-card" data-index="04">
-          <div class="projeto-thumb p4">
-            <div class="projeto-overlay">
-              <span>Ver Projeto →</span>
-            </div>
-          </div>
-          <div class="projeto-info">
-            <div class="projeto-tags">
-              <span>React Native</span><span>GraphQL</span>
-            </div>
-            <h3>App de Delivery</h3>
-            <p>Aplicativo mobile para delivery local com rastreamento em tempo real.</p>
-          </div>
-        </div>
-
-      </div>
+  <section id="projetos" class="section section-dark">
+    <div class="section-label">04 — Projetos</div>
+    <h2>O que eu construí</h2>
+    <div id="projects-grid" class="projects-grid">
+      <!-- Renderizado via JS -->
     </div>
   </section>
 
-  <!-- HABILIDADES -->
-  <section class="habilidades" id="habilidades">
-    <div class="container">
-      <div class="section-label">&#9670; 03 — Skills</div>
-      <h2 class="section-title">Meu Arsenal</h2>
-      <div class="skills-layout">
-        <div class="skills-category">
-          <h4>Frontend</h4>
-          <div class="skills-list">
-            <div class="skill-item" data-level="95">
-              <span class="skill-name">React / Next.js</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:95%"></div></div>
-            </div>
-            <div class="skill-item" data-level="88">
-              <span class="skill-name">TypeScript</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:88%"></div></div>
-            </div>
-            <div class="skill-item" data-level="85">
-              <span class="skill-name">CSS / Tailwind</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
-            </div>
-            <div class="skill-item" data-level="80">
-              <span class="skill-name">Vue.js</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="skills-category">
-          <h4>Backend</h4>
-          <div class="skills-list">
-            <div class="skill-item" data-level="90">
-              <span class="skill-name">Node.js / Express</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:90%"></div></div>
-            </div>
-            <div class="skill-item" data-level="82">
-              <span class="skill-name">PostgreSQL / MongoDB</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:82%"></div></div>
-            </div>
-            <div class="skill-item" data-level="75">
-              <span class="skill-name">GraphQL</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:75%"></div></div>
-            </div>
-            <div class="skill-item" data-level="70">
-              <span class="skill-name">Docker / CI/CD</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="skills-category">
-          <h4>Design & Outros</h4>
-          <div class="skills-list">
-            <div class="skill-item" data-level="88">
-              <span class="skill-name">Figma / UI Design</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:88%"></div></div>
-            </div>
-            <div class="skill-item" data-level="83">
-              <span class="skill-name">UX Research</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:83%"></div></div>
-            </div>
-            <div class="skill-item" data-level="78">
-              <span class="skill-name">Git / Agile</span>
-              <div class="skill-bar"><div class="skill-fill" style="--w:78%"></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- FRASE MOTIVACIONAL -->
+  <section id="frase" class="section frase-section">
+    <div class="section-label">05 — Inspiração</div>
+    <div class="frase-container">
+      <blockquote id="frase-texto">Carregando frase...</blockquote>
+      <p id="frase-traducao" class="frase-traducao"></p>
+      <button id="nova-frase-btn">Nova frase ✦</button>
     </div>
   </section>
 
   <!-- CONTATO -->
-  <section class="contato" id="contato">
-    <div class="container">
-      <div class="section-label">&#9670; 04 — Contato</div>
-      <div class="contato-content">
-        <h2>Vamos <em>trabalhar</em><br/>juntos?</h2>
-        <p>Tenho espaço na agenda para novos projetos. Se você tem uma ideia, vamos conversar.</p>
-        <div class="contato-links">
-          <a href="mailto:ryan@email.com" class="contato-link">
-            <span class="link-icon">✉</span>
-            ryan@email.com
-          </a>
-          <a href="#" class="contato-link">
-            <span class="link-icon">in</span>
-            linkedin.com/in/ryan
-          </a>
-          <a href="#" class="contato-link">
-            <span class="link-icon">gh</span>
-            github.com/ryan
-          </a>
-        </div>
-        <div class="contato-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nome</label>
-              <input type="text" placeholder="Seu nome" id="f-nome"/>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" placeholder="seu@email.com" id="f-email"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Mensagem</label>
-            <textarea placeholder="Me conta sobre o seu projeto..." rows="4" id="f-msg"></textarea>
-          </div>
-          <button class="btn-primary" id="send-btn" onclick="sendMsg()">Enviar Mensagem ↗</button>
-          <div class="form-feedback" id="feedback"></div>
-        </div>
+  <section id="contato" class="section">
+    <div class="section-label">06 — Contato</div>
+    <div class="contact-block">
+      <h2>Vamos conversar?</h2>
+      <a href="mailto:ryancarvalhosilva0907@gmail.com" class="contact-email">
+        ryancarvalhosilva0907@gmail.com
+      </a>
+      <div class="contact-links">
+        <a href="https://github.com/gabi915gubi/Portfolio" target="_blank" class="btn-outline">GitHub →</a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-logo">Ryan<span>.</span></span>
-        <span class="footer-copy">© 2025 — Feito com ♥ e muito café</span>
-        <div class="footer-socials">
-          <a href="#">TW</a>
-          <a href="#">LI</a>
-          <a href="#">GH</a>
-        </div>
-      </div>
-    </div>
+  <footer class="footer">
+    <p>© 2026 Ryan Carvalho · Feito com HTML, CSS & JS puro</p>
   </footer>
 
   <script src="script.js"></script>
